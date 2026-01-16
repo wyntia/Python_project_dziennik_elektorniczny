@@ -1,5 +1,8 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.crud.crud_student import create_student
 from app.schemas.schemas import StudentCreate
 

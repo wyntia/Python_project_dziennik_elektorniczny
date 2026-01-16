@@ -2,13 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from app.db.session import get_db
-from app.schemas import schemas
+from app.schemas import Subject, SubjectCreate, SubjectUpdate
 from app.crud import crud_subject
 
 router = APIRouter()
 
-@router.post("/", response_model=schemas.Subject, status_code=status.HTTP_201_CREATED)
-async def create_new_subject(subject: schemas.SubjectCreate, db: AsyncSession = Depends(get_db)):
+@router.post("/", response_model=Subject, status_code=status.HTTP_201_CREATED)
+async def create_new_subject(subject: SubjectCreate, db: AsyncSession = Depends(get_db)):
     """Dodaje nowy przedmiot. Sprawdza, czy nazwa nie jest duplikatem."""
     existing = await crud_subject.get_subject_by_name(db, name=subject.name)
     if existing:
@@ -18,12 +18,12 @@ async def create_new_subject(subject: schemas.SubjectCreate, db: AsyncSession = 
         )
     return await crud_subject.create_subject(db, subject)
 
-@router.get("/", response_model=List[schemas.Subject])
+@router.get("/", response_model=List[Subject])
 async def read_subjects(db: AsyncSession = Depends(get_db)):
     """Pobiera listę wszystkich przedmiotów."""
     return await crud_subject.get_subjects(db)
 
-@router.get("/{subject_id}", response_model=schemas.Subject)
+@router.get("/{subject_id}", response_model=Subject)
 async def read_subject(subject_id: int, db: AsyncSession = Depends(get_db)):
     """Pobiera pojedynczy przedmiot po ID."""
     subject = await crud_subject.get_subject(db, subject_id)
@@ -31,8 +31,8 @@ async def read_subject(subject_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Przedmiot nie istnieje.")
     return subject
 
-@router.patch("/{subject_id}", response_model=schemas.Subject)
-async def update_subject(subject_id: int, subject_data: schemas.SubjectUpdate, db: AsyncSession = Depends(get_db)):
+@router.patch("/{subject_id}", response_model=Subject)
+async def update_subject(subject_id: int, subject_data: SubjectUpdate, db: AsyncSession = Depends(get_db)):
     """Aktualizuje dane przedmiotu. Weryfikuje unikalność przy zmianie nazwy."""
     if subject_data.name:
         existing = await crud_subject.get_subject_by_name(db, name=subject_data.name)

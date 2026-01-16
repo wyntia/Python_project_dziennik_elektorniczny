@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.orm import relationship
 from app.db.session import Base
+from app.models.Teacher import teacher_subject
 
 class Subject(Base):
     """
@@ -13,3 +14,10 @@ class Subject(Base):
     description = Column(Text, nullable=True)
 
     grades = relationship("Grade", back_populates="subject", lazy="selectin")
+
+    teachers = relationship(
+        "Teacher",
+        secondary=teacher_subject,
+        back_populates="subjects",
+        lazy="selectin"
+    )
