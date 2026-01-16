@@ -28,3 +28,9 @@ class Teacher(Base):
         back_populates="teachers",
         lazy="selectin"
     )
+
+    remarks = relationship(
+        "Remark",
+        back_populates="teacher",
+        lazy="selectin"
+    )

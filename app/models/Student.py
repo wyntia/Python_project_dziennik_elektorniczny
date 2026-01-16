@@ -22,3 +22,10 @@ class Student(Base):
         cascade="all, delete-orphan",
         lazy="selectin"
     )
+
+    remarks = relationship(
+        "Remark",
+        back_populates="student",
+        cascade="all, delete-orphan",
+        lazy="selectin"
+    )

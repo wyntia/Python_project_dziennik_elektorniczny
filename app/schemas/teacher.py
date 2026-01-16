@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional
+
+from .remark import Remark
 from .subject import Subject
 
 
@@ -36,5 +38,6 @@ class Teacher(TeacherBase):
     """
     id: int
     subjects: List[Subject] = []
+    remarks: List[Remark] = []
 
     model_config = ConfigDict(from_attributes=True)

@@ -2,6 +2,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Literal, Optional
 from datetime import date
 from .grade import Grade
+from .remark import Remark
+
 
 class StudentBase(BaseModel):
     """Podstawowe dane ucznia."""
@@ -27,4 +29,5 @@ class Student(StudentBase):
     """Pełny schemat ucznia z listą ocen."""
     id: int
     grades: List[Grade] = []
+    remarks: List[Remark] = []
     model_config = ConfigDict(from_attributes=True)
