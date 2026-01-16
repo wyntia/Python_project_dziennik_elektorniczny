@@ -6,7 +6,7 @@ from datetime import datetime
 from app.api.endpoints import router as api_router
 from app.core.config import settings
 from app.db.session import engine, Base
-from app.models import Student, Subject, Grade
+import app.models
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,24 +30,22 @@ async def root() -> dict:
     """Endpoint powitalny."""
     return {"message": f"Welcome to {settings.PROJECT_NAME} API"}
 
+
 @app.websocket("/ws/status")
-async def websocket_endpoint(websocket: WebSocket) -> None:
+async def websocket_endpoint(websocket: WebSocket):
     """
-    Asynchroniczny WebSocket zwracający status serwera co 5 sekund.
-    Zgodnie z wymogiem: format JSON (status, data i godzina).
+    WebSocket zwracający JSON ze statusem serwera.
     """
     await websocket.accept()
     try:
         while True:
-            data = {
+            await websocket.send_json({
                 "status": "online",
-                "server_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "project": settings.PROJECT_NAME
-            }
-            await websocket.send_json(data)
+                "server_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            })
             await asyncio.sleep(5)
     except WebSocketDisconnect:
-        print("Client disconnected from WebSocket")
+        print("WebSocket disconnected")
 
 if __name__ == "__main__":
     import uvicorn

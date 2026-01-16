@@ -4,5 +4,6 @@ from app.models.Subjects import Subject
 from app.models.Grade import Grade
 from app.models.Teacher import Teacher
 from app.models.Remark import Remark
+from app.models.User import User
 
-__all__ = ["Base", "Student", "Subject", "Grade", "Teacher", "Remark"]
+__all__ = ["Base", "Student", "Subject", "Grade", "Teacher", "Remark", "User"]
