@@ -11,8 +11,18 @@ teacher_subject = Table(
 
 class Teacher(Base):
     """
-    Model SQLAlchemy reprezentujący nauczyciela w systemie dziennika.
-    Przechowuje dane osobowe oraz relacje do nauczanych przedmiotów.
+    Model SQLAlchemy reprezentujący nauczyciela zatrudnionego w placówce.
+
+    Przechowuje informacje o kwalifikacjach zawodowych oraz przypisanych obowiązkach dydaktycznych:
+    - id: Unikalny identyfikator nauczyciela.
+    - first_name: Imię nauczyciela.
+    - last_name: Nazwisko nauczyciela.
+    - academic_degree: Stopień naukowy lub tytuł zawodowy (np. mgr, dr).
+    - pesel: Unikalny numer PESEL nauczyciela.
+
+    Relacje:
+    - subjects: Lista przedmiotów, których naucza dany pedagog (relacja wiele-do-wielu).
+    - remarks: Zbiór wszystkich uwag wystawionych przez tego nauczyciela różnym uczniom.
     """
     __tablename__ = "teachers"
 

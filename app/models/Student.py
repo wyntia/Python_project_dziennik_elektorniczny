@@ -4,8 +4,19 @@ from app.db.session import Base
 
 class Student(Base):
     """
-    Model SQLAlchemy reprezentujący ucznia.
-    Przechowuje dane osobowe, w tym unikalny PESEL.
+    Model SQLAlchemy reprezentujący ucznia w systemie dziennika elektronicznego.
+
+    Przechowuje kluczowe dane osobowe oraz zarządza powiązanymi z uczniem rekordami edukacyjnymi:
+    - id: Unikalny identyfikator ucznia.
+    - first_name: Imię ucznia.
+    - last_name: Nazwisko ucznia.
+    - birth_date: Data urodzenia ucznia.
+    - gender: Płeć ucznia.
+    - pesel: Unikalny, 11-cyfrowy numer identyfikacyjny PESEL.
+
+    Relacje z automatycznym usuwaniem kaskadowym:
+    - grades: Wszystkie oceny przypisane do ucznia; usunięcie ucznia powoduje usunięcie jego ocen.
+    - remarks: Wszystkie uwagi wystawione uczniowi; usunięcie ucznia powoduje usunięcie jego uwag.
     """
     __tablename__ = "students"
 

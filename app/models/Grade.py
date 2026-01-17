@@ -5,8 +5,20 @@ from app.db.session import Base
 
 class Grade(Base):
     """
-    Model reprezentujący ocenę wystawioną uczniowi.
-    Zawiera wartość (np. '5+'), wagę oraz opis.
+    Model SQLAlchemy reprezentujący ocenę cząstkową wystawioną uczniowi z danego przedmiotu.
+
+    Zawiera informacje o wartości edukacyjnej oraz kontekście wystawienia stopnia:
+    - id: Unikalny identyfikator oceny.
+    - value: Wartość tekstowa oceny (np. '1', '5+', '4-').
+    - weight: Waga oceny używana do obliczania średniej ważonej (domyślnie 1.0).
+    - description: Opcjonalny opis (np. 'Sprawdzian z dynamiki', 'Odpowiedź ustna').
+    - student_id: Klucz obcy powiązany z uczniem otrzymującym ocenę.
+    - subject_id: Klucz obcy wskazujący przedmiot, z którego wystawiono ocenę.
+    - created_at: Znacznik czasu rejestrujący moment wystawienia oceny.
+
+    Powiązania:
+    - student: Referencja do obiektu ucznia.
+    - subject: Referencja do obiektu przedmiotu szkolnego.
     """
     __tablename__ = "grades"
 

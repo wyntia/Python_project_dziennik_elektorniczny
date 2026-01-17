@@ -5,8 +5,20 @@ from app.db.session import Base
 
 class Remark(Base):
     """
-    Model SQLAlchemy reprezentujący uwagę wystawioną uczniowi przez nauczyciela.
-    Przechowuje punkty, opis oraz informację, czy uwaga jest pozytywna czy negatywna.
+    Model SQLAlchemy reprezentujący formalną uwagę (pochwałę lub naganę) wystawioną uczniowi.
+
+    Rejestruje szczegóły zachowania oraz powiązania między uczniem a nauczycielem:
+    - id: Numer identyfikacyjny uwagi.
+    - points: Liczba punktów (dodatnich lub ujemnych) wpływających na ocenę z zachowania.
+    - description: Treść uwagi opisująca konkretne zdarzenie lub postawę.
+    - is_positive: Flaga określająca, czy uwaga ma charakter pozytywny.
+    - student_id: Klucz obcy łączący uwagę z konkretnym uczniem.
+    - teacher_id: Klucz obcy wskazujący nauczyciela, który wystawił uwagę.
+    - created_at: Data i czas utworzenia wpisu, generowane automatycznie przez serwer bazy danych.
+
+    Powiązania:
+    - student: Obiekt ucznia, którego dotyczy uwaga.
+    - teacher: Obiekt nauczyciela będącego autorem wpisu.
     """
     __tablename__ = "remarks"
 
