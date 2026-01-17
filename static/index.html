@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Serwera - Szkoła API</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        h2 { color: #1a73e8; margin-bottom: 1.5rem; }
+        .status-box { padding: 1rem; border-radius: 8px; background: #e8f0fe; border: 1px solid #d2e3fc; }
+        .online { color: #28a745; font-weight: bold; }
+        .time { font-size: 1.2rem; color: #5f6368; margin-top: 10px; }
+        .info { font-size: 0.9rem; color: #9aa0a6; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>📡 Monitor Serwera</h2>
+    <div class="status-box">
+        <div id="status" class="online">Łączenie...</div>
+        <div id="clock" class="time">--:--:--</div>
+    </div>
+    <div id="server-name" class="info">Czekam na dane...</div>
+</div>
+
+<script>
+    const socket = new WebSocket("ws://127.0.0.1:8000/ws/server-status");
+
+    socket.onopen = function(e) {
+        document.getElementById("status").innerText = "POŁĄCZONO";
+        console.log("[open] Połączenie nawiązane");
+    };
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        document.getElementById("status").innerText = data.status.toUpperCase();
+        document.getElementById("clock").innerText = data.timestamp.split(' ')[1];
+        document.getElementById("server-name").innerText = data.server_name;
+    };
+
+    socket.onclose = function(event) {
+        document.getElementById("status").innerText = "ROZŁĄCZONO";
+        document.getElementById("status").style.color = "#dc3545";
+    };
+
+    socket.onerror = function(error) {
+        console.log(`[error] ${error.message}`);
+    };
+</script>
+
+</body>
+</html>
